@@ -1,12 +1,13 @@
-var fs = require('fs'),
-    yaml = require('js-yaml');
+const fs = require('fs'),
+    yaml = require('js-yaml'),
+    expect = require('chai').expect;
 
 describe('travis.yml', function () {
     var travisYAML,
         travisYAMLError;
 
     try {
-        travisYAML = yaml.safeLoad(fs.readFileSync('.travis.yml').toString());
+        travisYAML = yaml.load(fs.readFileSync('.travis.yml').toString());
     }
     catch (e) {
         travisYAMLError = e;
@@ -21,13 +22,9 @@ describe('travis.yml', function () {
     });
 
     describe('strucure', function () {
-        it('should use the trusty Ubuntu distribution', function () {
-            expect(travisYAML).to.have.property('dist').that.equal('trusty');
-        });
-
         it('should have the language set to node', function () {
             expect(travisYAML).to.have.property('language').that.equal('node_js');
-            expect(travisYAML).to.have.property('node_js').that.eql(['6', '8', '10']);
+            expect(travisYAML).to.have.property('node_js').that.eql([10, 12]);
         });
     });
 });
